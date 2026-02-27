@@ -14,7 +14,7 @@ class Workflow
     Time.now.utc.iso8601
   end
 
-  # --- Agents sync (upsert-ish) ---
+  # --- Agents sync  ---
   def sync_agents!(agents_payload)
     agents = DB[:agents]
     inserted = 0
@@ -189,7 +189,7 @@ class Workflow
     now = now_iso
     offer_id = offers.insert(job_id: job[:id], agent_id: next_agent[:id], status: "sent", sent_at: now)
 
-    # Offer “response” endpoint (later: Twilio will hit /webhooks/driver_response)
+    # Offer “response” endpoint (later updates: Twilio will hit /webhooks/driver_response)
     offer_url = "#{@base_url}/offers/#{offer_id}"
 
     @dispatcher.send_offer(job: job, agent: next_agent, offer_url: offer_url)
